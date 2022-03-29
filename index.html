@@ -179,7 +179,10 @@
     </div>
 
     <script>
-        if (!getTheme()) setTheme("dark")
+        const themes = {
+            light: "background-color: rgba(254, 254, 254)",
+            dark: "background: #1d1d1d url(https://cdn.aimware.net/asset/img/background.png) fixed;color: white;"
+        }
 		
 		if(getTheme() !== null){
 			setTheme(getTheme());
@@ -188,11 +191,6 @@
 			setTheme("dark");
 			updateColor()
 		}
-		
-        const themes = {
-            light: "background-color: rgba(254, 254, 254)",
-            dark: "background: #1d1d1d url(https://cdn.aimware.net/asset/img/background.png) fixed;color: white;"
-        }
         
         const groups = {
             "admin": "<div class='adming'><a>Administrator</a></div><span style='color: white; display: none'> (a)</span>",

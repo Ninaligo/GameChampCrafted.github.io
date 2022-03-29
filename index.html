@@ -184,6 +184,7 @@
             dark: "background: #1d1d1d url(https://cdn.aimware.net/asset/img/background.png) fixed;color: white;"
         }
 		
+		//Fixed theme not being updated from cookie if it was 'light'
 		if(getTheme() !== null){
 			setTheme(getTheme());
 			updateColor()
@@ -202,7 +203,7 @@
             "banned": "<div class='bannedg'><a>Banned</a></div><span style='color: white; display: none'> (g)</span>",
         }
         
-        const ThreadsJsonURL = `threads.json`
+        const ThreadsJsonURL = `https://raw.githubusercontent.com/RickyyProfile/RickyyProfile.github.io/main/threads.json`
         let threads = null
         let theme = true
         

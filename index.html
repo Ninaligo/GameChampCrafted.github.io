@@ -180,6 +180,15 @@
 
     <script>
         if (!getTheme()) setTheme("dark")
+		
+		if(getTheme() !== null){
+			setTheme(getTheme());
+			updateColor()
+		} else {
+			setTheme("dark");
+			updateColor()
+		}
+		
         const themes = {
             light: "background-color: rgba(254, 254, 254)",
             dark: "background: #1d1d1d url(https://cdn.aimware.net/asset/img/background.png) fixed;color: white;"

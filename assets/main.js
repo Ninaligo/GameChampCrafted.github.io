@@ -52,7 +52,7 @@ function search(term) {
     // Set the display property to block
     //quickSearchContainer.style.display = "block";
     // Send an AJAX request to the PHP script
-	fetch(`https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/${term.replace(" ", "%20")}?page=1`)
+	fetch(`https://api.consumet.org/anime/gogoanime/${term.replace(" ", "%20")}?page=1`)
 	.then(response => response.json())
 	.then(json_series => {
 		json_series['results'].forEach(series => {
@@ -357,7 +357,7 @@ function dubfetch() {
     $(".nav li").removeClass("active"),
 	$("#dubbtn").addClass("active"),
 	console.log("Dub Page Load");			
-	fetch(`https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/recent-episodes?page=1&type=2`)
+	fetch(`https://api.consumet.org/anime/gogoanime/recent-episodes?page=1&type=2`)
 		.then((response) => response.json())
 		.then((data) => {
 			animeList.innerHTML = "";
@@ -367,11 +367,13 @@ function dubfetch() {
 				const link = document.createElement("a");
 				//const slug_title = series.url.split("/")[5]
 				const title = series.title
+				/*
 				if (series.malId != 0) {
 					link.href = "associate.html?id=" + series.malId + "&dub" + "&ep=" + series.episodeNumber + "&fallback=" + series.id;
 				} else {
 					link.href = "associate.html?id=" + series.id + "&override" + "&ep=" + series.episodeNumber + "&fallback=" + series.id;
-				}	
+				}*/
+				link.href = `v2.html?name=${series.id}&ep=${series.episodeNumber}`;
 				link.title = series.title;			
 				animeLi.appendChild(link);
 				const imageDiv = document.createElement("div");
@@ -408,8 +410,21 @@ function dubfetch() {
 				animeList.appendChild(animeLi);
 				const malId = series.malId
 				const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
+				if (series.title.endsWith("(Dub)")) {
+					const romaji_title = series.title.replace("(Dub)", "")
+					nameP.textContent = romaji_title;
+
+					const dubSpan = document.createElement("span");
+					dubSpan.className = "dubtag";
+					dubSpan.textContent = " [Dub]";
+					nameP.appendChild(dubSpan);
+				} else {
+					nameP.textContent = series.title;
+				}
+				ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
+				timeDiv.textContent = "N/A";
 				//const url = https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles;
-        
+				/*
 				if (malId != 0) {
 					fetch(url, {
 						headers: {
@@ -419,7 +434,7 @@ function dubfetch() {
 						.then((response) => response.json())
 						.then((data) => {
 							rating = data.mean;
-							studio = data.studios[0].name;
+							studio = data.studios[0].nameundefined;
 							english = data['alternative_titles'].en;
 							
 							if (rating == null) {
@@ -473,7 +488,7 @@ function dubfetch() {
 					ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
 					timeDiv.textContent = "N/A";
 					nameP.textContent = series.title;
-				}
+				}*/
 			});
 		});
 }
@@ -497,7 +512,8 @@ function subfetch() {
     $(".nav li").removeClass("active"),
         $("#subbtn").addClass("active"),
         console.log("Sub Page Load");
-			fetch('https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/recent-episodes?page=1&type=1')
+		//https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/recent-episodes?page=1&type=1
+			fetch('https://api.consumet.org/anime/gogoanime/recent-episodes?page=1&type=1')
 			.then((response) => response.json())
 			.then((data) => {
 				animeList.innerHTML = "";
@@ -506,11 +522,13 @@ function subfetch() {
 					animeLi.className = "anime";
 					const link = document.createElement("a");
 					//const slug_title = series.url.split("/")[5]
-					if (series.malId != 0) {
+					/*
+					if (series.malId != 0 || series.malId != undefined) {
 						link.href = "associate.html?id=" + series.malId + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
 					} else {
 						link.href = "associate.html?id=" + series.id + "&override" + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
-					}
+					}*/
+					link.href = `v2.html?name=${series.id}&ep=${series.episodeNumber}`;
 					link.title = series.title;
 					animeLi.appendChild(link);
 					const imageDiv = document.createElement("div");
@@ -545,8 +563,22 @@ function subfetch() {
 
 					const malId = series.malId
 					const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
-					//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+					
+					if (series.title.endsWith("(Dub)")) {
+						const romaji_title = series.title.replace("(Dub)", "")
+						nameP.textContent = romaji_title;
 
+						const dubSpan = document.createElement("span");
+						dubSpan.className = "dubtag";
+						dubSpan.textContent = " [Dub]";
+						nameP.appendChild(dubSpan);
+					} else {
+						nameP.textContent = series.title;
+					}
+					ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
+					timeDiv.textContent = "N/A";
+					//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+					/*
 					if (malId != 0) {
 						fetch(url, {
 							headers: {
@@ -556,7 +588,7 @@ function subfetch() {
 							.then((response) => response.json())
 							.then((data) => {
 								rating = data.mean;
-								studio = data.studios[0].name;
+								studio = data.studios[0].nameundefined;
 								english = data['alternative_titles'].en;
 
 								if (rating == null) {
@@ -578,7 +610,7 @@ function subfetch() {
 					} else {
 						ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
 						timeDiv.textContent = "N/A";
-					}
+					}*/
 				});
 			});
 }
@@ -873,7 +905,8 @@ function loadMore() {
 	if ($("#dubbtn").hasClass("active")) {
 		console.log("Load more Dubs");
 		dubpage++;
-		fetch(`https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/recent-episodes?page=${dubpage}&type=2`)
+		
+		fetch(`https://api.consumet.org/anime/gogoanime/recent-episodes?page=${dubpage}&type=2`)
 			.then((response) => response.json())
 			.then((data) => {
 				data.results.forEach((series) => {
@@ -882,11 +915,13 @@ function loadMore() {
 					const link = document.createElement("a");
 					//const slug_title = series.url.split("/")[5]
 					const title = series.title
+					/*
 					if (series.malId != 0) {
 						link.href = "associate.html?id=" + series.malId + "&dub" + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
 					} else {
 						link.href = "associate.html?id=" + series.id + "&override" + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
-					}
+					}*/
+					link.href = `v2.html?name=${series.id}&ep=${series.episodeNumber}`;
 					link.title = series.title;
 					animeLi.appendChild(link);
 					const imageDiv = document.createElement("div");
@@ -926,11 +961,27 @@ function loadMore() {
 					imageDiv.appendChild(ratingDiv);
 					animeList.appendChild(animeLi);
 
+					ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
+					timeDiv.textContent = "N/A";
+					if (series.title.endsWith("(Dub)")) {
+						const romaji_title = series.title.replace("(Dub)", "")
+						nameP.textContent = romaji_title;
+
+						const dubSpan = document.createElement("span");
+						dubSpan.className = "dubtag";
+						dubSpan.textContent = " [Dub]";
+						nameP.appendChild(dubSpan);
+					} else {
+						nameP.textContent = series.title;
+					}
+
 					const malId = series.malId
 					const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
 					//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
-	
-					if (malId != 0) {
+					ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
+					timeDiv.textContent = "N/A";
+					/*
+					if (malId != undefined) {
 						fetch(url, {
 							headers: {
 								'X-MAL-CLIENT-ID': 'b139312771f283d7d31c937b94a2f067'
@@ -939,7 +990,7 @@ function loadMore() {
 							.then((response) => response.json())
 							.then((data) => {
 								rating = data.mean;
-								studio = data.studios[0].name;
+								studio = data.studios[0].nameundefined;
 								english = data['alternative_titles'].en;
 
 								if (rating == null) {
@@ -993,14 +1044,14 @@ function loadMore() {
 						ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
 						timeDiv.textContent = "N/A";
 						nameP.textContent = series.title;
-					}
+					}*/
             });
         });
 	} else {}
 	if ($("#subbtn").hasClass("active")) {
 		console.log("Load more Subs");
 		subpage++;
-		fetch(`https://ns512449.ip-192-99-8.net:3000/anime/gogoanime/recent-episodes?page=${subpage}&type=1`)
+		fetch(`https://api.consumet.org/anime/gogoanime/recent-episodes?page=${subpage}&type=1`)
 		.then((response) => response.json())
         .then((data) => {
 			data.results.forEach((series) => {
@@ -1008,11 +1059,13 @@ function loadMore() {
                 animeLi.className = "anime";
                 const link = document.createElement("a");
                 //const slug_title = series.url.split("/")[5]
+				/*
 				if (series.malId != 0) {
 					link.href = "associate.html?id=" + series.malId + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
 				} else {
 					link.href = "associate.html?id=" + series.id + "&override" + "&ep=" + series.episodeNumber+ "&fallback=" + series.id;
-				}
+				}*/
+				link.href = `v2.html?name=${series.id}&ep=${series.episodeNumber}`;
                 link.title = series.title;
                 animeLi.appendChild(link);
                 const imageDiv = document.createElement("div");
@@ -1046,8 +1099,22 @@ function loadMore() {
 
 				const malId = series.malId
 				const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
-				//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+				
+				if (series.title.endsWith("(Dub)")) {
+					const romaji_title = series.title.replace("(Dub)", "")
+					nameP.textContent = romaji_title;
 
+					const dubSpan = document.createElement("span");
+					dubSpan.className = "dubtag";
+					dubSpan.textContent = " [Dub]";
+					nameP.appendChild(dubSpan);
+				} else {
+					nameP.textContent = series.title;
+				}
+				ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
+				timeDiv.textContent = "N/A";
+				//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+				/*
 				if (malId != 0) {
 					fetch(url, {
 						headers: {
@@ -1057,7 +1124,7 @@ function loadMore() {
 						.then((response) => response.json())
 						.then((data) => {
 							rating = data.mean;
-							studio = data.studios[0].name;
+							studio = data.studios[0].nameundefined;
 							english = data['alternative_titles'].en;
 
 							if (rating == null) {
@@ -1080,7 +1147,7 @@ function loadMore() {
 					ratingDiv.innerHTML = "<i class='glyphicon glyphicon-star'></i> N/A";
 					timeDiv.textContent = "N/A";
 					nameP.textContent = series.title;
-				}
+				}*/
             });
         });
 	} else {}

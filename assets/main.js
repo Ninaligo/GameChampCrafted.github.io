@@ -544,7 +544,8 @@ function subfetch() {
 					animeList.appendChild(animeLi);
 
 					const malId = series.malId
-					const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+					const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
+					//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
 
 					if (malId != 0) {
 						fetch(url, {
@@ -926,7 +927,8 @@ function loadMore() {
 					animeList.appendChild(animeLi);
 
 					const malId = series.malId
-					const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+					const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
+					//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
 	
 					if (malId != 0) {
 						fetch(url, {
@@ -1043,7 +1045,8 @@ function loadMore() {
 				animeList.appendChild(animeLi);
 
 				const malId = series.malId
-				const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
+				const url = 'https://corsproxy.io/?' + encodeURIComponent(`https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`);
+				//const url = `https://api.myanimelist.net/v2/anime/${malId}?fields=mean,genres,studios,alternative_titles`;
 
 				if (malId != 0) {
 					fetch(url, {

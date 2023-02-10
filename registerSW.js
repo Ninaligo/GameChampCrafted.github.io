@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/GameChampCrafted.github.io/sw.js', { scope: '/GameChampCrafted.github.io/' })})}
